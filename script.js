@@ -291,7 +291,7 @@
     var heart = el("span", { cls: "env-heart", text: "\u2665", attrs: { "aria-hidden": "true" } });
     var env = el("button", { cls: "envelope", attrs: { type: "button", "aria-label": "Open the envelope", "aria-expanded": "false" } }, [
       el("span", { cls: "env-body" }),
-      el("span", { cls: "env-card", text: hideName ? "ABC" : name(), attrs: { "aria-hidden": "true" } }),
+      el("span", { cls: "env-card", text: hideName ? "Abira Khalid" : name(), attrs: { "aria-hidden": "true" } }),
       el("span", { cls: "env-front" }),
       el("span", { cls: "env-flap" }),
       heart
