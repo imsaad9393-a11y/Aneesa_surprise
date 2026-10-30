@@ -291,7 +291,7 @@
     var heart = el("span", { cls: "env-heart", text: "\u2665", attrs: { "aria-hidden": "true" } });
     var env = el("button", { cls: "envelope", attrs: { type: "button", "aria-label": "Open the envelope", "aria-expanded": "false" } }, [
       el("span", { cls: "env-body" }),
-      el("span", { cls: "env-card", text: hideName ? "Abira" : name(), attrs: { "aria-hidden": "true" } }),
+      el("span", { cls: "env-card", text: hideName ? "Aneesa Saad" : name(), attrs: { "aria-hidden": "true" } }),
       el("span", { cls: "env-front" }),
       el("span", { cls: "env-flap" }),
       heart
@@ -308,7 +308,7 @@
     var headline = hideName ? (cfg.pageTitle || "A surprise for you") : (w.headline || "A surprise for " + name());
     var sec = el("section", { cls: "screen intro" }, [
       heading("h1", headline),
-      el("p", { cls: "subline", text: w.subline || "Tap the envelope." }),
+      el("p", { cls: "subline", text: w.subline || "Some things are better discovered than told\u2026" }),
       env,
       el("div", { cls: "actions" }, [cont])
     ]);
@@ -321,44 +321,50 @@
   }
   function passcodeScreen() {
     var p = cfg.passcode || {};
-    var answers = (p.answers || []).filter(Boolean);
-    if (!answers.length) { return null; }
-    var cs = p.caseSensitive === true;
-    var input = el("input", { attrs: { type: "text", id: "pc", autocomplete: "off", autocapitalize: "off", autocorrect: "off", spellcheck: "false", enterkeyhint: "go", "aria-describedby": "pcstatus" } });
+    var input = el("input", { attrs: { type: "text", id: "pc", maxlength: "200",
+      placeholder: p.placeholder || "Type your answer\u2026",
+      autocomplete: "off", autocapitalize: "sentences", autocorrect: "off", spellcheck: "false",
+      enterkeyhint: "go", "aria-describedby": "pcstatus" } });
     var status = el("div", { cls: "status", attrs: { id: "pcstatus", role: "status", "aria-live": "polite" } });
     var hint = el("p", { cls: "muted", text: "Hint: " + (p.hint || ""), attrs: { hidden: "" } });
     var hintBtn = el("button", { cls: "ghost", text: "Need a hint?", attrs: { type: "button" }, on: { click: function () { hint.hidden = false; hintBtn.hidden = true; } } });
     if (!p.hint) hintBtn.hidden = true;
+    var submit = el("button", { text: p.buttonLabel || "Continue", attrs: { type: "submit" } });
     var form = el("form", { cls: "passcode card tilt", attrs: { novalidate: "" } }, [
-      el("label", { text: p.prompt || "Enter the secret word", attrs: { for: "pc" } }),
+      el("label", { text: p.prompt || "Tell me something", attrs: { for: "pc" } }),
       el("div", { cls: "actions" }, [input]),
       status, hint,
-      el("div", { cls: "actions" }, [el("button", { text: "Unlock", attrs: { type: "submit" } }), hintBtn])
+      el("div", { cls: "actions" }, [submit, hintBtn])
     ]);
-    var unlocked = false;
+    var nxt = nextBtn(p.continueLabel || "Continue");
+    nxt.className = "pop"; nxt.hidden = true;
+    var done = false;
     form.addEventListener("submit", function (e) {
       e.preventDefault();
-      if (unlocked) return;
-      var v = norm(input.value, cs);
-      var ok = answers.some(function (a) { return norm(a, cs) === v; });
-      if (ok) {
-        unlocked = true;
-        status.className = "status ok";
-        status.textContent = "Unlocked.";
-        form.classList.remove("shake"); form.classList.add("ok");
-        var r = form.getBoundingClientRect();
-        sparkle(r.left + r.width / 2, r.top + r.height / 2, 70);
-        setTimeout(function () { go(idx + 1); }, reduceMotion ? 0 : 800);
-      } else {
-        status.className = "status err";
-        status.textContent = "Not quite. Try again.";
+      if (done) return;
+      var v = String(input.value).replace(/\s+/g, " ").trim();
+      if (!v) { /* empty or spaces only: stay on this screen, no harsh error */
+        status.className = "status";
+        status.textContent = p.emptyMessage || "Type a guess first.";
         form.classList.remove("shake"); void form.offsetWidth; form.classList.add("shake");
-        input.select();
+        input.focus();
+        return;
       }
+      done = true;
+      input.readOnly = true; submit.hidden = true; hintBtn.hidden = true; hint.hidden = true;
+      status.className = "status cake-msg";
+      status.textContent = p.successMessage || "Thank you.";
+      form.classList.remove("shake"); form.classList.add("ok");
+      var r = form.getBoundingClientRect();
+      sparkle(r.left + r.width / 2, r.top + r.height / 2, 70);
+      nxt.hidden = false; nxt.focus({ preventScroll: true });
     });
-    var sec = el("section", { cls: "screen" }, [heading("h2", "A little secret first"), form]);
+    var sec = el("section", { cls: "screen" }, [heading("h2", p.heading || "A little secret first"), form, el("div", { cls: "actions" }, [nxt])]);
     sec._enter = function () { /* "Start over" returns here: reset the gate */
-      unlocked = false; input.value = ""; status.className = "status"; status.textContent = "";
+      done = false; input.value = ""; input.readOnly = false; submit.hidden = false;
+      hintBtn.hidden = !p.hint; hint.hidden = true;
+      status.className = "status"; status.textContent = "";
+      nxt.hidden = true;
       form.classList.remove("ok"); form.classList.remove("shake");
     };
     return sec;
@@ -678,6 +684,11 @@ function show(animate) {
 
   function finalScreen() {
     var F = cfg.final || {};
+    var paras = (F.paragraphs && F.paragraphs.length ? F.paragraphs : [F.message || ""]).map(function (t, i) {
+      var p = el("p", { text: t });
+      if (i > 0 && !reduceMotion) p.style.animationDelay = (1.2 + i * 0.6) + "s";
+      return p;
+    });
     var reveal = el("div", { cls: "reveal", text: F.revealText || "", attrs: { hidden: "", role: "status" } });
     var btn = el("button", { cls: "glow", text: F.revealLabel || "One last surprise" });
     if (!F.revealText) btn.hidden = true;
@@ -687,9 +698,9 @@ function show(animate) {
       setTimeout(function () { sparkle(window.innerWidth / 2, window.innerHeight * 0.4, 40); }, 700);
     }
     btn.addEventListener("click", function () { reveal.hidden = false; btn.disabled = true; finale(); });
-    var again = el("button", { cls: F.revealText ? "ghost" : "glow", text: "Start over", on: { click: function () { go(0); } } });
+    var again = el("button", { cls: F.revealText ? "ghost" : "glow", text: "Experience It Again \u2661", on: { click: function () { go(0); } } });
     var sec = el("section", { cls: "screen" }, [
-      el("div", { cls: "card final-card tilt" }, [heading("h2", F.headline || "Happy Birthday, " + name()), el("p", { text: F.message || "" })]),
+      el("div", { cls: "card final-card tilt" }, [heading("h2", F.headline || "Thank you, " + name())].concat(paras)),
       reveal, el("div", { cls: "actions" }, [btn, again])
     ]);
     /* With no revealText there is no button, so the celebration plays when this screen appears. */
