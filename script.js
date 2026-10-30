@@ -350,6 +350,20 @@
         input.focus();
         return;
       }
+      /* Optional answer check: only when config.js sets "requireAnswer": true */
+      var answers = (p.answers || []).filter(Boolean);
+      if (p.requireAnswer === true && answers.length) {
+        var cs = p.caseSensitive === true;
+        var typed = norm(v, cs);
+        var ok = answers.some(function (a) { return typed.indexOf(norm(a, cs)) !== -1; });
+        if (!ok) {
+          status.className = "status err";
+          status.textContent = p.wrongMessage || "Not quite. Try again.";
+          form.classList.remove("shake"); void form.offsetWidth; form.classList.add("shake");
+          input.select();
+          return;
+        }
+      }
       done = true;
       input.readOnly = true; submit.hidden = true; hintBtn.hidden = true; hint.hidden = true;
       status.className = "status cake-msg";
