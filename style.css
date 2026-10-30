@@ -59,13 +59,14 @@ body.is-warm .a3 { opacity:1; }
 
 h1, h2, h3 { font-family:var(--font-heading); line-height:1.2; margin:0 0 .6em; overflow-wrap:anywhere;
   color:var(--champagne); text-shadow:0 0 28px rgba(227,176,143,.3); font-weight:400; letter-spacing:.01em; }
-h1 { font-size:clamp(1.9rem, 6vw, 3rem); }
+  h1 { font-size:clamp(1.7rem, 5.5vw, 2.8rem); text-wrap:balance; }
 h2 { font-size:clamp(1.5rem, 4.5vw, 2.2rem); }
 h1:focus, h2:focus { outline:none; }
 .w { display:inline-block; animation:word .9s var(--ease) both; animation-delay:calc(.2s + var(--i,0) * .09s); }
 p { margin:0 0 1em; overflow-wrap:anywhere; }
 .subline, .muted { color:var(--muted); }
 .subline { animation:fade 1.4s 1.1s ease both; }
+  .subline { font-style: italic; letter-spacing: .02em; max-width: 30ch; margin-inline: auto; }
 .script { font-family:var(--font-script); }
 
 /* ---------- buttons ---------- */
@@ -143,7 +144,7 @@ button.glow { animation:glowPulse 3.2s ease-in-out infinite; }
 .env-front { position:absolute; inset:1px; z-index:3; border-radius:5px; pointer-events:none;
   background:linear-gradient(0deg, rgba(0,0,0,.16), transparent 60%), linear-gradient(160deg, #a63452, #6e1f36);
   clip-path:polygon(0 0, 50% var(--seam), 100% 0, 100% 100%, 0 100%); }
-.env-front::after { content:"For you"; position:absolute; left:0; right:0; bottom:13%; text-align:center;
+.env-front::after { content:"For you \2661"; position:absolute; left:0; right:0; bottom:13%; text-align:center;
   font-family:var(--font-script); font-size:clamp(1.05rem, 5.2vw, 1.3rem); color:var(--champagne);
   text-shadow:0 1px 2px rgba(0,0,0,.4); transition:opacity .3s ease; }
 
@@ -163,6 +164,16 @@ button.glow { animation:glowPulse 3.2s ease-in-out infinite; }
 /* ---- opening, staggered: heart fades > flap folds back > letter rises ---- */
 .envelope.open .env-heart { opacity:0; animation:none; transition:opacity .25s ease; }
 .envelope.open .env-front::after { opacity:0; }
+.envelope::after {
+  content: "tap the envelope";
+  position: absolute; left: 50%; top: calc(100% + .9rem);
+  transform: translateX(-50%);
+  white-space: nowrap; pointer-events: none;
+  font-size: .95rem; letter-spacing: .04em; color: var(--accent);
+  animation: fade 1.4s 2.2s ease both;
+}
+.envelope.open::after { opacity: 0; animation: none; }
+.envelope.open .env-front::after { opacity:0; }
 .envelope.open .env-flap {
   transform:rotateX(180deg) scaleY(.62);
   filter:brightness(.72);
@@ -173,7 +184,7 @@ button.glow { animation:glowPulse 3.2s ease-in-out infinite; }
   transform:translateY(-105%);
   transition:transform 1.3s cubic-bezier(.22,.61,.36,1) .45s;
 }
-
+.passcode input::placeholder { color: var(--muted); opacity: .85; font-style: italic; }
 .envelope:disabled {
   opacity: 1;
   cursor: default;
