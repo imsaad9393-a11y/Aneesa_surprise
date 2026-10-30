@@ -77,17 +77,19 @@ window.SITE_CONFIG = {
 
   // PLAYFUL gate only. The answer is readable by anyone who views the page source.
   // Never put private information behind it. Set "passcode" to false under modules to skip it.
-    "passcode": {
+  "passcode": {
     "heading": "A little secret first\u2026",
-    "prompt": "Who volunteered to tolerate all your moods forever? 🤣❤️",
+    "prompt": "Who volunteered to tolerate all your moods forever? \uD83E\uDD23\u2764\uFE0F",
     "placeholder": "Tell me your guess, Madam\u2026",
     "buttonLabel": "Let's find out \u2661",
     "successMessage": "Hehe\u2026 you might know me better than anyone, but there's still one little thing I haven't told you yet. \u2764\uFE0F",
     "emptyMessage": "Take a guess, sweetheart\u2026 any guess will do.",
+    "wrongMessage": "Hehe\u2026 not quite, try again, Madam.",
     "continueLabel": "Continue",
-    // Any non-empty answer is accepted now, so "answers" and "caseSensitive" are no longer used.
+    // true = the answer must contain one of the words in "answers". false = any answer works.
+    "requireAnswer": true,
     "hint": "",
-    "answers": ["Saad", "sadi"],
+    "answers": ["saad", "sadi"],
     "caseSensitive": false
   },
 
