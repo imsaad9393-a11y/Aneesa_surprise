@@ -15,11 +15,11 @@ window.SITE_CONFIG = {
   "slug": "our-special-surprise",
   "occasion": "birthday",
   "package": "premium",
-  "pageTitle": "A Little Surprise for You",
+  "pageTitle": "A Little Surprise for You, Aneesa",
 
   // Who it is for and who it is from. "nickname" (if set) is used on the envelope.
-  "recipient": { "name": "Abira Aiman", "nickname": "Abira", "age": 28 },
-  "sender": { "name": "Ahad" },
+  "recipient": { "name": "Aneesa Saad", "nickname": "Aneesa", "age": 17 },
+  "sender": { "name": "Saad Sadi" },
 
   // PRIVACY (new, optional). true = the opening envelope screen does NOT show the
   // recipient's name; it shows "pageTitle" instead. The name first appears on the
@@ -77,22 +77,29 @@ window.SITE_CONFIG = {
 
   // PLAYFUL gate only. The answer is readable by anyone who views the page source.
   // Never put private information behind it. Set "passcode" to false under modules to skip it.
-  "passcode": {
-    "prompt": "When is our meeting?",
+    "passcode": {
+    "heading": "A little secret first\u2026",
+    "prompt": "Who volunteered to tolerate all your moods forever? 🤣❤️",
+    "placeholder": "Tell me your guess, Madam\u2026",
+    "buttonLabel": "Let's find out \u2661",
+    "successMessage": "Hehe\u2026 you might know me better than anyone, but there's still one little thing I haven't told you yet. \u2764\uFE0F",
+    "emptyMessage": "Take a guess, sweetheart\u2026 any guess will do.",
+    "continueLabel": "Continue",
+    // Any non-empty answer is accepted now, so "answers" and "caseSensitive" are no longer used.
     "hint": "",
-    "answers": ["1st october", "1st oct", "october 1", "01 october"],
+    "answers": ["Saad", "sadi"],
     "caseSensitive": false
   },
 
   "letter": {
-    "title": "Dear Abira Aiman,",
+    "title": "My Dear Aneesa, ❤️",
     "paragraphs": [
-      "Another year, and you still turn ordinary afternoons into little celebrations.",
-      "I wanted to give you something you could open slowly, the way you open the things you love.",
-      "Thank you for the long walks, the off-key singing in the car, and for laughing at my jokes even when they were not funny. Especially then."
+      "In just a little time, you've become someone who makes my ordinary days feel a little more special.",
+      "There are things I feel that I don't always know how to explain, and maybe there are things about your heart that I'm still learning to understand. But one thing I know is that I'm genuinely happy to have you in my life.",
+      "I don't know what the future holds for us, but I'd love to discover it with you, one little moment at a time. No pressure, no perfect promises—just honesty, care, and the chance to make something beautiful together."
     ],
-    "signoff": "With all my love,",
-    "signature": "Ahad"
+    "signoff": "With love,",
+    "signature": "Saad Sadi ❤️"
   },
 
   // CAKE: candles from 1 to 12.
@@ -120,13 +127,17 @@ window.SITE_CONFIG = {
   // FINAL MESSAGE. Optional "revealLabel" and "revealText" add a button that shows an
   // extra message. They are not set here, so there is no extra button; add them
   // yourself only with your own words. Leaving "revealText" out is fully supported.
-  "final": {
-    "headline": "Happy Birthday, Abira Aiman",
-    "message": "Happy Birthday to the person who holds a special place in my heart."
+    "final": {
+    "headline": "A Little Something From My Heart, Aneesa \u2764\uFE0F",
+    "paragraphs": [
+      "I don't know exactly where this little journey will take us, but I'm glad it brought me to you.",
+      "These past few months have given me someone new to care about, someone I want to understand better, and someone I'd like to keep discovering, one day at a time.",
+      "Whatever comes next, I'm happy our story began. \u2764\uFE0F"
+    ]
   },
 
   // AUDIO (new, optional). Leave "file" empty for no sound. If you add your own
   // royalty-free or personally owned audio file (for example "audio/song.mp3"), a visible
   // sound button appears. Nothing ever plays until the visitor presses it.
-  "audio": { "file": "" }
+  "audio": { "file": "audio/song.mp3.mpeg", "onLabel": "Music on", "offLabel": "Music off" }
 };
